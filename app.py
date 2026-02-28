@@ -54,14 +54,14 @@ body{background:#0a0a12;color:white;font-family:Poppins;}
 </html>
 """
 
-# ---------------- BLOG PAGE ----------------
+# ---------------- BLOG PAGE (UPDATED) ----------------
 BLOG_PAGE = """
 <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>How to Download Snapchat & Pinterest & Instagram Videos</title>
-<meta name="description" content="Learn how to download Snapchat sportlight and pinterest videos and Instagram reels easily using Universal Pro Downloader.">
+<title>How to Download Instagram, Snapchat & Pinterest Videos</title>
+<meta name="description" content="Learn how to download Snapchat spotlight, Pinterest videos, and Instagram reels easily using Universal Pro Downloader.">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
 body{background:#0a0a12;color:white;font-family:Poppins;}
@@ -71,10 +71,10 @@ body{background:#0a0a12;color:white;font-family:Poppins;}
 </head>
 <body>
 <div class="container">
-<h1>How to Download YouTube & Instagram Videos</h1>
+<h1>How to Download Instagram, Snapchat & Pinterest Videos</h1>
 <p class="mt-3">
-Universal Pro Downloader ek simple aur powerful tool hai jo aapko Snapchat sportlight,
-p8nterest, Instagram reels download karne deta hai.
+Universal Pro Downloader ek simple aur powerful tool hai jo aapko Snapchat spotlight,
+Pinterest, Instagram reels download karne deta hai.
 </p>
 
 <div class="ad-box">Google AdSense Blog Ad</div>
