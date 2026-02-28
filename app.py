@@ -1,11 +1,33 @@
+import os, uuid
+from flask import Flask, render_template_string, request, send_file, after_this_request
+import yt_dlp
 
-import os, uuid                                                                 from flask import Flask, render_template_string, request, send_file, after_this_request                                                                         import yt_dlp                                                                   
-app = Flask(__name__)                                                           DOWNLOAD_FOLDER = "downloads"                                                   if not os.path.exists(DOWNLOAD_FOLDER):                                             os.makedirs(DOWNLOAD_FOLDER)                                                                                                                                # ---------------- LANDING PAGE ----------------
-LANDING_PAGE = """                                                              <!DOCTYPE html>                                                                 <html>                                                                          <head>                                                                          <meta name="viewport" content="width=device-width, initial-scale=1.0">          <title>Universal Pro Downloader</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">                                                          <style>                                                                         body{background:#0a0a12;color:white;font-family:Poppins;}                       .hero{text-align:center;padding:80px 20px;}                                     .btn-main{padding:14px 35px;border-radius:40px;background:linear-gradient(45deg,#764ba2,#667eea);border:none;color:white;}
-.card-box{background:#161625;padding:30px;border-radius:20px;margin-top:40px;}  .ad-box{background:#1a1a2e;border:2px dashed #444;padding:25px;text-align:center;color:#888;border-radius:15px;margin:25px 0;}                                  </style>                                                                        </head>
+app = Flask(__name__)
+DOWNLOAD_FOLDER = "downloads"
+if not os.path.exists(DOWNLOAD_FOLDER):
+    os.makedirs(DOWNLOAD_FOLDER)
+
+# ---------------- LANDING PAGE ----------------
+LANDING_PAGE = """
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Universal Pro Downloader</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body{background:#0a0a12;color:white;font-family:Poppins;}
+.hero{text-align:center;padding:80px 20px;}
+.btn-main{padding:14px 35px;border-radius:40px;background:linear-gradient(45deg,#764ba2,#667eea);border:none;color:white;}
+.card-box{background:#161625;padding:30px;border-radius:20px;margin-top:40px;}
+.ad-box{background:#1a1a2e;border:2px dashed #444;padding:25px;text-align:center;color:#888;border-radius:15px;margin:25px 0;}
+</style>
+</head>
 <body>
-<div class="container">                                                         <div class="hero">                                                              <h1 class="fw-bold">Universal Pro Downloader</h1>                               <p class="mt-3">Download YouTube Videos, Shorts, Instagram Reels & Stories in High Quality.</p>
+<div class="container">
+<div class="hero">
+<h1 class="fw-bold">Universal Pro Downloader</h1>
+<p class="mt-3">Download YouTube Videos, Shorts, Instagram Reels & Stories in High Quality.</p>
 <a href="/tool" class="btn btn-main mt-3">Start Now</a>
 </div>
 
