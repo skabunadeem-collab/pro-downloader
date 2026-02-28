@@ -27,7 +27,7 @@ body{background:#0a0a12;color:white;font-family:Poppins;}
 <div class="container">
 <div class="hero">
 <h1 class="fw-bold">Universal Pro Downloader</h1>
-<p class="mt-3">Download YouTube Videos, Shorts, Instagram Reels & Stories in High Quality.</p>
+<p class="mt-3">Download Snapchat, Pinterest, Instagram Reels & Stories in High Quality.</p>
 <a href="/tool" class="btn btn-main mt-3">Start Now</a>
 </div>
 
@@ -60,8 +60,8 @@ BLOG_PAGE = """
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>How to Download YouTube & Instagram Videos</title>
-<meta name="description" content="Learn how to download YouTube videos and Instagram reels easily using Universal Pro Downloader.">
+<title>How to Download Snapchat & Pinterest & Instagram Videos</title>
+<meta name="description" content="Learn how to download Snapchat sportlight and pinterest videos and Instagram reels easily using Universal Pro Downloader.">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
 body{background:#0a0a12;color:white;font-family:Poppins;}
@@ -73,8 +73,8 @@ body{background:#0a0a12;color:white;font-family:Poppins;}
 <div class="container">
 <h1>How to Download YouTube & Instagram Videos</h1>
 <p class="mt-3">
-Universal Pro Downloader ek simple aur powerful tool hai jo aapko YouTube videos,
-Shorts, Instagram reels aur stories download karne deta hai.
+Universal Pro Downloader ek simple aur powerful tool hai jo aapko Snapchat sportlight,
+p8nterest, Instagram reels download karne deta hai.
 </p>
 
 <div class="ad-box">Google AdSense Blog Ad</div>
