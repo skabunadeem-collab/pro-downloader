@@ -34,7 +34,7 @@ body{background:#0a0a12;color:white;font-family:Poppins;}
 <div class="card-box">
 <h4>Why Use Our Tool?</h4>
 <ul>
-<li>HD Video Download (360p / 720p / 1080p)</li>
+<li>HD Video Download</li>
 <li>MP3 Audio Download</li>
 <li>Fast & Secure</li>
 <li>Mobile Friendly</li>
@@ -54,7 +54,7 @@ body{background:#0a0a12;color:white;font-family:Poppins;}
 </html>
 """
 
-# ---------------- BLOG PAGE (SEO READY) ----------------
+# ---------------- BLOG PAGE ----------------
 BLOG_PAGE = """
 <!DOCTYPE html>
 <html>
@@ -83,13 +83,8 @@ Shorts, Instagram reels aur stories download karne deta hai.
 <ol>
 <li>Video link copy kare</li>
 <li>Tool page par paste kare</li>
-<li>Quality select kare</li>
 <li>Download button dabaye</li>
 </ol>
-
-<p class="mt-4">
-Yeh tool fast, secure aur mobile friendly hai.
-</p>
 
 <a href="/tool" class="btn btn-success mt-3">Go to Downloader</a>
 </div>
@@ -119,15 +114,6 @@ video{width:100%;border-radius:15px;margin-top:15px;}
 <div class="card-box">
 <form method="POST" action="/analyze">
 <input type="text" name="url" class="form-control mb-3" placeholder="Paste Link Here..." required>
-
-<select name="quality" class="form-control mb-3">
-<option value="best">Best Quality</option>
-<option value="360">360p</option>
-<option value="720">720p</option>
-<option value="1080">1080p</option>
-<option value="audio">Audio Only (MP3)</option>
-</select>
-
 <button class="btn btn-primary w-100">Fetch Video</button>
 </form>
 
@@ -144,7 +130,6 @@ video{width:100%;border-radius:15px;margin-top:15px;}
 
 <form method="POST" action="/download">
 <input type="hidden" name="video_url" value="{{ result.original_url }}">
-<input type="hidden" name="quality" value="{{ result.quality }}">
 <button class="btn btn-success w-100 mt-3">Download</button>
 </form>
 {% endif %}
@@ -176,15 +161,12 @@ def tool():
 @app.route("/analyze", methods=["POST"])
 def analyze():
     url = request.form.get("url")
-    quality = request.form.get("quality")
 
     try:
         with yt_dlp.YoutubeDL({"quiet": True}) as ydl:
             info = ydl.extract_info(url, download=False)
 
             preview_url = None
-
-            # Find progressive mp4 format (video + audio together)
             for f in info.get("formats", []):
                 if f.get("ext") == "mp4" and f.get("acodec") != "none" and f.get("vcodec") != "none":
                     preview_url = f.get("url")
@@ -194,49 +176,25 @@ def analyze():
                 "title": info.get("title", "Video"),
                 "preview": preview_url,
                 "original_url": url,
-                "quality": quality
             }
 
             return render_template_string(TOOL_PAGE, result=result)
 
-    except Exception as e:
+    except:
         return render_template_string(TOOL_PAGE, error="Invalid or Unsupported Link")
 
 @app.route("/download", methods=["POST"])
 def download():
     url = request.form.get("video_url")
-    quality = request.form.get("quality")
     uid = str(uuid.uuid4())[:8]
 
-    if quality == "audio":
-        file_path = os.path.join(DOWNLOAD_FOLDER, f"{uid}.mp3")
-        ydl_opts = {
-            "format": "bestaudio/best",
-            "outtmpl": file_path,
-            "postprocessors": [{
-                "key": "FFmpegExtractAudio",
-                "preferredcodec": "mp3",
-                "preferredquality": "192",
-            }],
-            "quiet": True,
-        }
-    else:
-        file_path = os.path.join(DOWNLOAD_FOLDER, f"{uid}.mp4")
-        if quality == "360":
-            fmt = "bestvideo[height<=360]+bestaudio/best[height<=360]"
-        elif quality == "720":
-            fmt = "bestvideo[height<=720]+bestaudio/best[height<=720]"
-        elif quality == "1080":
-            fmt = "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
-        else:
-            fmt = "best"
+    file_path = os.path.join(DOWNLOAD_FOLDER, f"{uid}.mp4")
 
-        ydl_opts = {
-            "format": fmt,
-            "outtmpl": file_path,
-            "merge_output_format": "mp4",
-            "quiet": True,
-        }
+    ydl_opts = {
+        "format": "best[ext=mp4]",
+        "outtmpl": file_path,
+        "quiet": True,
+    }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
