@@ -1,4 +1,3 @@
-
 import os, uuid
 from flask import Flask, render_template_string, request, send_file, after_this_request
 import yt_dlp
@@ -81,7 +80,7 @@ LANDING_PAGE = f"""
         <p class="lead mt-3 text-muted">The fastest way to save Snapchat, Pinterest, and Instagram Reels in HD.</p>
         <a href="/tool" class="btn btn-main mt-4 btn-lg">Launch Downloader</a>
     </div>
-
+    
     <div class="row mt-4">
         <div class="col-md-4"><div class="card-box text-center"><i class="fas fa-bolt fa-2x mb-3 text-info"></i><h5>Super Fast</h5><p class="small text-muted">High-speed servers for instant downloads.</p></div></div>
         <div class="col-md-4"><div class="card-box text-center"><i class="fas fa-shield-alt fa-2x mb-3 text-success"></i><h5>Secure</h5><p class="small text-muted">No login required. Your privacy is our priority.</p></div></div>
@@ -103,11 +102,11 @@ TOOL_PAGE = f"""
         <h3 class="text-center mb-4">Paste Video Link</h3>
         <form method="POST" action="/analyze">
             <div class="input-group mb-3">
-                <input type="text" name="url" class="form-control bg-dark text-white border-secondary" placeholder="Paste Instagram, Pinterest or Snapchat link..." required>
+                <input type="text" name="url" class="form-control bg-dark text-white border-secondary" placeholder="Paste Instagram, YouTube, Pinterest or Snapchat link..." required>
                 <button class="btn btn-primary px-4">Fetch</button>
             </div>
         </form>
-
+        
         <div class="ad-box">ADVERTISEMENT</div>
 
         {{% if result %}}
@@ -140,7 +139,7 @@ BLOG_PAGE = f"""
 {NAVBAR}
 <div class="container py-5">
     <h2 class="mb-5 text-center fw-bold">Latest <span class="brand-text">Guides</span></h2>
-
+    
     <div class="row">
         <div class="col-md-6">
             <div class="blog-card">
@@ -215,7 +214,7 @@ ABOUT_PAGE = f"""
 <div class="container py-5" style="max-width: 800px;">
     <div class="card-box">
         <h2 class="brand-text">About Universal Pro</h2>
-        <p class="mt-4 text-muted">Universal Pro Downloader is a leading web-based tool designed to help users download media from social platforms like Instagram, Snapchat, and Pinterest. Our mission is to provide a seamless, ad-light, and fast experience for everyone.</p>
+        <p class="mt-4 text-muted">Universal Pro Downloader is a leading web-based tool designed to help users download media from social platforms like Instagram, YouTube, Snapchat, and Pinterest. Our mission is to provide a seamless, ad-light, and fast experience for everyone.</p>
         <p class="text-muted">Developed and maintained by <strong>sknadeem</strong>, this tool utilizes advanced algorithms to fetch the highest quality available for your favorite content.</p>
         <hr class="border-secondary my-4">
         <h5>Meet the Creator</h5>
@@ -284,7 +283,7 @@ TERMS_PAGE = f"""
             <li>You must not use this tool to download copyrighted content without permission.</li>
             <li>The tool is provided for personal use only.</li>
             <li>We are not responsible for how users use the downloaded media.</li>
-            <li>We are not affiliated with Instagram, Snapchat, or Pinterest.</li>
+            <li>We are not affiliated with Instagram, YouTube, Snapchat, or Pinterest.</li>
         </ul>
         <p class="text-muted">Universal Pro Downloader (Powered by sknadeem) reserves the right to modify these terms at any time.</p>
     </div>
@@ -326,36 +325,58 @@ def terms():
 @app.route("/analyze", methods=["POST"])
 def analyze():
     url = request.form.get("url")
+    if not url:
+        return render_template_string(TOOL_PAGE, error="Please paste a valid URL.")
+    
     try:
-        with yt_dlp.YoutubeDL({"quiet": True}) as ydl:
+        # Improved yt-dlp options for Render compatibility
+        ydl_opts = {
+            "quiet": True,
+            "no_warnings": True,
+            "format": "best[ext=mp4]/best",
+            # Add proxy settings if needed, but not recommended on free tier
+        }
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            preview_url = None
-            for f in info.get("formats", []):
-                if f.get("ext") == "mp4" and f.get("acodec") != "none" and f.get("vcodec") != "none":
-                    preview_url = f.get("url")
-                    break
+            
+            # Find the best mp4 format or fallback to direct url
+            preview_url = info.get("url")
+            if "formats" in info:
+                for f in info.get("formats", []):
+                    if f.get("ext") == "mp4" and f.get("vcodec") != "none":
+                        preview_url = f.get("url")
+                        break
+
             result = {
                 "title": info.get("title", "Video"),
                 "preview": preview_url,
                 "original_url": url,
             }
             return render_template_string(TOOL_PAGE, result=result)
-    except:
-        return render_template_string(TOOL_PAGE, error="Invalid or Unsupported Link. Make sure the profile is public.")
+    except Exception as e:
+        return render_template_string(TOOL_PAGE, error=f"Error: {str(e)}. Make sure the link is public.")
 
 @app.route("/download", methods=["POST"])
 def download():
     url = request.form.get("video_url")
+    if not url:
+        return "No URL provided", 400
+        
     uid = str(uuid.uuid4())[:8]
     file_path = os.path.join(DOWNLOAD_FOLDER, f"{uid}.mp4")
+    
+    # Download options for high speed and format
     ydl_opts = {
-        "format": "best[ext=mp4]",
+        "format": "best[ext=mp4]/best",
         "outtmpl": file_path,
         "quiet": True,
+        "no_warnings": True,
     }
+    
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
+            
         @after_this_request
         def remove_file(response):
             try:
@@ -363,6 +384,7 @@ def download():
             except:
                 pass
             return response
+            
         return send_file(file_path, as_attachment=True)
     except Exception as e:
         return f"Download Failed: {str(e)}"
