@@ -10,7 +10,7 @@ if not os.path.exists(DOWNLOAD_FOLDER):
 # ---------------- SHARED STYLES & NAV ----------------
 COMMON_HEAD = """
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="google-adsense-account" content="ca-pub-4065684390234340">
 <script async
 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4065684390234340"
 crossorigin="anonymous"></script>
