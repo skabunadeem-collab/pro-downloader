@@ -9,10 +9,9 @@ if not os.path.exists(DOWNLOAD_FOLDER):
 
 # ---------------- SHARED STYLES & NAV ----------------
 COMMON_HEAD = """
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-adsense-account" content="ca-pub-4065684390234340">
+<meta name="google-adsense-account" content="ca-pub-4065684392034340">
 <script async
-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4065684390234340"
+src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4065684392034340"
 crossorigin="anonymous"></script>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -43,8 +42,8 @@ crossorigin="anonymous"></script>
 AD_UNIT_CODE = """
 <ins class="adsbygoogle"
      style="display:block"
-     data-ad-client="ca-pub-4065684390234340"
-     data-ad-slot="YOUR_AD_SLOT_HERE"
+     data-ad-client="ca-pub-4065684392034340"
+     data-ad-slot="1234567890"
      data-ad-format="auto"
      data-full-width-responsive="true"></ins>
 <script>
@@ -309,8 +308,7 @@ def terms():
 # --- ADSENSE ADS.TXT ROUTE ---
 @app.route("/ads.txt")
 def ads_txt():
-    # Aapka ads.txt snippet jo image 2 mein dikh raha hai
-    return "google.com, pub-4065684390234340, DIRECT, f08c47fec0942fa0", 200, {'Content-Type': 'text/plain'}
+    return "google.com, pub-4065684392034340, DIRECT, f08c47fec0942fa0", 200, {'Content-Type': 'text/plain'}
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
