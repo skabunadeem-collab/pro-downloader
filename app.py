@@ -9,9 +9,10 @@ if not os.path.exists(DOWNLOAD_FOLDER):
 
 # ---------------- SHARED STYLES & NAV ----------------
 COMMON_HEAD = """
-<meta name="google-adsense-account" content="ca-pub-4065684392034340">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-adsense-account" content="ca-pub-4065684390234340">
 <script async
-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4065684392034340"
+src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4065684390234340"
 crossorigin="anonymous"></script>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -36,19 +37,6 @@ crossorigin="anonymous"></script>
     h1, h2, h3, h4, h5, p, span, li { color: #ffffff !important; }
     .text-muted { color: #b0b0b0 !important; }
 </style>
-"""
-
-# Ad unit code to be placed in ad boxes
-AD_UNIT_CODE = """
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-4065684392034340"
-     data-ad-slot="1234567890"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 """
 
 NAVBAR = """
@@ -105,7 +93,7 @@ LANDING_PAGE = f"""
         <div class="col-md-4"><div class="card-box text-center"><i class="fas fa-mobile-alt fa-2x mb-3 text-warning"></i><h5>Responsive</h5><p class="small text-muted">Optimized for all mobile and desktop devices.</p></div></div>
     </div>
 
-    <div class="ad-box">{AD_UNIT_CODE}</div>
+    <div class="ad-box">ADVERTISEMENT - PLACEHOLDER</div>
 </div>
 {FOOTER}
 </body></html>
@@ -125,7 +113,7 @@ TOOL_PAGE = f"""
             </div>
         </form>
         
-        <div class="ad-box">{AD_UNIT_CODE}</div>
+        <div class="ad-box">ADVERTISEMENT</div>
 
         {{% if result %}}
         <div class="mt-4 animate__animated animate__fadeIn">
@@ -183,8 +171,43 @@ BLOG_PAGE = f"""
                 <p class="small text-muted">Always check the link type. For Instagram, public profiles work best. We fetch the best available bitrate for you.</p>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="blog-card">
+                <h5>5. Is it legal to download social media videos?</h5>
+                <p class="small text-muted">Downloading for personal offline viewing is generally okay. Always respect copyright and do not distribute content without permission.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="blog-card">
+                <h5>6. Top 5 Instagram Story Downloaders</h5>
+                <p class="small text-muted">While we focus on Reels and posts, using our tool ensures you get media without watermarks, unlike official download options.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="blog-card">
+                <h5>7. How to convert Pinterest Videos to MP3</h5>
+                <p class="small text-muted">Download the video first using our tool, then use any free online converter to extract the audio effortlessly.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="blog-card">
+                <h5>8. Downloading Private Videos: The Truth</h5>
+                <p class="small text-muted">Our tool strictly respects privacy settings. Only public videos from public profiles can be downloaded for security reasons.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="blog-card">
+                <h5>9. Mobile vs Desktop Downloaders</h5>
+                <p class="small text-muted">Both platforms work equally well. The tool is fully responsive, ensuring smooth saving directly to your gallery or downloads folder.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="blog-card">
+                <h5>10. Fixing 'Link Not Found' Errors</h5>
+                <p class="small text-muted">Ensure the link is public and not broken. Sometimes, removing tracking parameters (like ?utm_source) helps fetch the video correctly.</p>
+            </div>
+        </div>
     </div>
-    <div class="ad-box">{AD_UNIT_CODE}</div>
 </div>
 {FOOTER}
 </body></html>
@@ -305,11 +328,6 @@ def privacy():
 def terms():
     return render_template_string(TERMS_PAGE)
 
-# --- ADSENSE ADS.TXT ROUTE ---
-@app.route("/ads.txt")
-def ads_txt():
-    return "google.com, pub-4065684392034340, DIRECT, f08c47fec0942fa0", 200, {'Content-Type': 'text/plain'}
-
 @app.route("/analyze", methods=["POST"])
 def analyze():
     url = request.form.get("url")
@@ -317,14 +335,17 @@ def analyze():
         return render_template_string(TOOL_PAGE, error="Please paste a valid URL.")
     
     try:
+        # Improved yt-dlp options for Render compatibility
         ydl_opts = {
             "quiet": True,
             "no_warnings": True,
             "format": "best[ext=mp4]/best",
+            # Add proxy settings if needed, but not recommended on free tier
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
             
+            # Find the best mp4 format or fallback to direct url
             preview_url = info.get("url")
             if "formats" in info:
                 for f in info.get("formats", []):
@@ -350,6 +371,7 @@ def download():
     uid = str(uuid.uuid4())[:8]
     file_path = os.path.join(DOWNLOAD_FOLDER, f"{uid}.mp4")
     
+    # Download options for high speed and format
     ydl_opts = {
         "format": "best[ext=mp4]/best",
         "outtmpl": file_path,
