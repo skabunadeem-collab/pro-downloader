@@ -10,10 +10,10 @@ if not os.path.exists(DOWNLOAD_FOLDER):
 # ---------------- SHARED STYLES & NAV ----------------
 COMMON_HEAD = """
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-adsense-account" content="ca-pub-4065684390234340">
-<script async
-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4065684390234340"
-crossorigin="anonymous"></script>
+
+<script src="https://pl28887357.effectivegatecpm.com/f4/11/25/f4112594a7523e1fadb297e68ce1e46a.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -39,18 +39,6 @@ crossorigin="anonymous"></script>
 </style>
 """
 
-# Ad unit code to be placed in ad boxes
-AD_UNIT_CODE = """
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-4065684390234340"
-     data-ad-slot="YOUR_AD_SLOT_HERE"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-"""
 
 NAVBAR = """
 <nav class="navbar navbar-expand-lg sticky-top navbar-dark">
@@ -105,8 +93,7 @@ LANDING_PAGE = f"""
         <div class="col-md-4"><div class="card-box text-center"><i class="fas fa-shield-alt fa-2x mb-3 text-success"></i><h5>Secure</h5><p class="small text-muted">No login required. Your privacy is our priority.</p></div></div>
         <div class="col-md-4"><div class="card-box text-center"><i class="fas fa-mobile-alt fa-2x mb-3 text-warning"></i><h5>Responsive</h5><p class="small text-muted">Optimized for all mobile and desktop devices.</p></div></div>
     </div>
-
-    <div class="ad-box">{AD_UNIT_CODE}</div>
+    
 </div>
 {FOOTER}
 </body></html>
@@ -126,7 +113,6 @@ TOOL_PAGE = f"""
             </div>
         </form>
         
-        <div class="ad-box">{AD_UNIT_CODE}</div>
 
         {{% if result %}}
         <div class="mt-4 animate__animated animate__fadeIn">
@@ -185,7 +171,7 @@ BLOG_PAGE = f"""
             </div>
         </div>
     </div>
-    <div class="ad-box">{AD_UNIT_CODE}</div>
+
 </div>
 {FOOTER}
 </body></html>
@@ -307,10 +293,6 @@ def terms():
     return render_template_string(TERMS_PAGE)
 
 # --- ADSENSE ADS.TXT ROUTE ---
-@app.route("/ads.txt")
-def ads_txt():
-    # Aapka ads.txt snippet jo image 2 mein dikh raha hai
-    return "google.com, pub-4065684390234340, DIRECT, f08c47fec0942fa0", 200, {'Content-Type': 'text/plain'}
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
