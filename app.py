@@ -14,8 +14,6 @@ COMMON_HEAD = """
 <script src="https://pl28887357.effectivegatecpm.com/f4/11/25/f4112594a7523e1fadb297e68ce1e46a.js"></script>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
@@ -36,9 +34,18 @@ COMMON_HEAD = """
     .blog-card:hover { transform: scale(1.02); background: #1c1c2e; }
     h1, h2, h3, h4, h5, p, span, li { color: #ffffff !important; }
     .text-muted { color: #b0b0b0 !important; }
+    .ad-slot-header { width: 100%; text-align: center; margin-bottom: 20px; }
 </style>
-"""
 
+<script>
+    // Har click par ad refresh ya show karne ke liye logic
+    function triggerAd() {
+        // Agar aapke paas direct link hai toh window.open bhi kar sakte hain
+        // ya simply ad script ko reload hone denge browser interaction se
+        console.log("Ad Triggered");
+    }
+</script>
+"""
 
 NAVBAR = """
 <nav class="navbar navbar-expand-lg sticky-top navbar-dark">
@@ -85,7 +92,7 @@ LANDING_PAGE = f"""
     <div class="hero">
         <h1 class="display-4 fw-bold">Universal Pro <span class="brand-text">Downloader</span></h1>
         <p class="lead mt-3 text-muted">The fastest way to save Snapchat, Pinterest, and Instagram Reels in HD.</p>
-        <a href="/tool" class="btn btn-main mt-4 btn-lg">Launch Downloader</a>
+        <a href="/tool" onclick="triggerAd()" class="btn btn-main mt-4 btn-lg">Launch Downloader</a>
     </div>
     
     <div class="row mt-4">
@@ -93,7 +100,6 @@ LANDING_PAGE = f"""
         <div class="col-md-4"><div class="card-box text-center"><i class="fas fa-shield-alt fa-2x mb-3 text-success"></i><h5>Secure</h5><p class="small text-muted">No login required. Your privacy is our priority.</p></div></div>
         <div class="col-md-4"><div class="card-box text-center"><i class="fas fa-mobile-alt fa-2x mb-3 text-warning"></i><h5>Responsive</h5><p class="small text-muted">Optimized for all mobile and desktop devices.</p></div></div>
     </div>
-    
 </div>
 {FOOTER}
 </body></html>
@@ -104,19 +110,25 @@ TOOL_PAGE = f"""
 <body>
 {NAVBAR}
 <div class="container" style="max-width: 700px;">
+    
+    <div class="ad-slot-header">
+       </div>
+
     <div class="card-box">
         <h3 class="text-center mb-4">Paste Video Link</h3>
         <form method="POST" action="/analyze">
             <div class="input-group mb-3">
                 <input type="text" name="url" class="form-control bg-dark text-white border-secondary" placeholder="Paste Instagram, YouTube, Pinterest or Snapchat link..." required>
-                <button class="btn btn-primary px-4">Fetch</button>
+                <button class="btn btn-primary px-4" onclick="triggerAd()">Fetch</button>
             </div>
         </form>
         
-
         {{% if result %}}
         <div class="mt-4 animate__animated animate__fadeIn">
             <h5 class="mb-3 text-truncate">{{{{ result.title }}}}</h5>
+
+            <div class="ad-box">Advertisement</div>
+
             {{% if result.preview %}}
             <video controls style="width:100%; border-radius:15px; border: 1px solid #444;">
                 <source src="{{{{ result.preview }}}}" type="video/mp4">
@@ -124,7 +136,7 @@ TOOL_PAGE = f"""
             {{% endif %}}
             <form method="POST" action="/download">
                 <input type="hidden" name="video_url" value="{{{{ result.original_url }}}}">
-                <button class="btn btn-success w-100 mt-3 py-3 fw-bold">Download High Quality MP4</button>
+                <button class="btn btn-success w-100 mt-3 py-3 fw-bold" onclick="triggerAd()">Download High Quality MP4</button>
             </form>
         </div>
         {{% endif %}}
@@ -138,161 +150,35 @@ TOOL_PAGE = f"""
 </body></html>
 """
 
-BLOG_PAGE = f"""
-<!DOCTYPE html><html><head>{COMMON_HEAD}<title>Guides & Articles - Universal Pro</title></head>
-<body>
-{NAVBAR}
-<div class="container py-5">
-    <h2 class="mb-5 text-center fw-bold">Latest <span class="brand-text">Guides</span></h2>
-    
-    <div class="row">
-        <div class="col-md-6">
-            <div class="blog-card">
-                <h5>1. How to download Instagram Reels in 4K?</h5>
-                <p class="small text-muted">Use our tool to paste the Reels link. We automatically detect the highest resolution available, often up to 4K, for a crystal clear experience.</p>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="blog-card">
-                <h5>2. Saving Snapchat Spotlight Videos</h5>
-                <p class="small text-muted">Copy the Spotlight link from Snapchat. Our backend processes it to provide a direct download link without needing to screen record.</p>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="blog-card">
-                <h5>3. Best Pinterest Video Downloader 2024</h5>
-                <p class="small text-muted">Pinterest videos can be tricky. Universal Pro ensures you get the mp4 format directly, skipping the embedded player limitations.</p>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="blog-card">
-                <h5>4. Tips for High-Quality Video Downloads</h5>
-                <p class="small text-muted">Always check the link type. For Instagram, public profiles work best. We fetch the best available bitrate for you.</p>
-            </div>
-        </div>
-    </div>
-
-</div>
-{FOOTER}
-</body></html>
-"""
-
-ABOUT_PAGE = f"""
-<!DOCTYPE html><html><head>{COMMON_HEAD}<title>About Us - Universal Pro</title></head>
-<body>
-{NAVBAR}
-<div class="container py-5" style="max-width: 800px;">
-    <div class="card-box">
-        <h2 class="brand-text">About Universal Pro</h2>
-        <p class="mt-4 text-muted">Universal Pro Downloader is a leading web-based tool designed to help users download media from social platforms like Instagram, YouTube, Snapchat, and Pinterest. Our mission is to provide a seamless, ad-light, and fast experience for everyone.</p>
-        <p class="text-muted">Developed and maintained by <strong>sknadeem</strong>, this tool utilizes advanced algorithms to fetch the highest quality available for your favorite content.</p>
-        <hr class="border-secondary my-4">
-        <h5>Meet the Creator</h5>
-        <p class="text-muted">This project is powered by <strong>sknadeem</strong>. For updates and support, follow on Instagram: <a href="https://www.instagram.com/_sknadeem_/" target="_blank" style="color:#667eea; text-decoration:none;">@_sknadeem_</a></p>
-    </div>
-</div>
-{FOOTER}
-</body></html>
-"""
-
-CONTACT_PAGE = f"""
-<!DOCTYPE html><html><head>{COMMON_HEAD}<title>Contact Us - Universal Pro</title></head>
-<body>
-{NAVBAR}
-<div class="container py-5" style="max-width: 600px;">
-    <div class="card-box">
-        <h2 class="brand-text text-center">Contact Us</h2>
-        <p class="text-center text-muted mb-4">Have questions or feedback?</p>
-        <div class="mb-4 text-center">
-            <i class="fas fa-envelope fa-2x text-primary mb-2"></i>
-            <p><strong>Email:</strong> nadeemshaik2007@gmail.com</p>
-        </div>
-        <div class="text-center">
-            <i class="fab fa-instagram fa-2x text-danger mb-2"></i>
-            <p><strong>DM on Instagram:</strong> <a href="https://www.instagram.com/_sknadeem_/" target="_blank" style="color:#667eea; text-decoration:none;">@_sknadeem_</a></p>
-        </div>
-        <hr class="border-secondary my-4">
-        <p class="small text-muted text-center">We usually respond within 24-48 hours.</p>
-    </div>
-</div>
-{FOOTER}
-</body></html>
-"""
-
-PRIVACY_PAGE = f"""
-<!DOCTYPE html><html><head>{COMMON_HEAD}<title>Privacy Policy</title></head>
-<body>
-{NAVBAR}
-<div class="container py-5">
-    <div class="card-box">
-        <h2 class="mb-4">Privacy Policy</h2>
-        <p class="text-muted">At Universal Pro Downloader, accessible from this website, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by us and how we use it.</p>
-        <h4 class="text-white">1. Data Collection</h4>
-        <p class="text-muted">We do not require any user registration or personal data like name or address. We do not store the videos you download.</p>
-        <h4 class="text-white">2. Log Files</h4>
-        <p class="text-muted">Universal Pro Downloader follows a standard procedure of using log files. These files log visitors when they visit websites.</p>
-        <h4 class="text-white">3. Cookies</h4>
-        <p class="text-muted">We may use cookies to improve user experience and analyze traffic.</p>
-        <h4 class="text-white">4. Third-Party Ads</h4>
-        <p class="text-muted">We use Google AdSense to serve ads. Google may use DART cookies to serve ads based on your visit to our site.</p>
-    </div>
-</div>
-{FOOTER}
-</body></html>
-"""
-
-TERMS_PAGE = f"""
-<!DOCTYPE html><html><head>{COMMON_HEAD}<title>Terms & Conditions</title></head>
-<body>
-{NAVBAR}
-<div class="container py-5">
-    <div class="card-box">
-        <h2 class="mb-4">Terms & Conditions</h2>
-        <p class="text-muted">By using this website, you agree to comply with the following terms:</p>
-        <ul class="text-muted">
-            <li>You must not use this tool to download copyrighted content without permission.</li>
-            <li>The tool is provided for personal use only.</li>
-            <li>We are not responsible for how users use the downloaded media.</li>
-            <li>We are not affiliated with Instagram, YouTube, Snapchat, or Pinterest.</li>
-        </ul>
-        <p class="text-muted">Universal Pro Downloader (Powered by sknadeem) reserves the right to modify these terms at any time.</p>
-    </div>
-</div>
-{FOOTER}
-</body></html>
-"""
+# ... (BLOG_PAGE, ABOUT_PAGE, CONTACT_PAGE, PRIVACY_PAGE, TERMS_PAGE - Paste your original ones here)
+BLOG_PAGE = f"""<!DOCTYPE html><html><head>{COMMON_HEAD}<title>Guides & Articles - Universal Pro</title></head><body>{NAVBAR}<div class="container py-5"><h2 class="mb-5 text-center fw-bold">Latest <span class="brand-text">Guides</span></h2><div class="row"><div class="col-md-6"><div class="blog-card"><h5>1. How to download Instagram Reels in 4K?</h5><p class="small text-muted">Use our tool to paste the Reels link.</p></div></div><div class="col-md-6"><div class="blog-card"><h5>2. Saving Snapchat Spotlight Videos</h5><p class="small text-muted">Copy the Spotlight link from Snapchat.</p></div></div></div></div>{FOOTER}</body></html>"""
+ABOUT_PAGE = f"""<!DOCTYPE html><html><head>{COMMON_HEAD}<title>About Us - Universal Pro</title></head><body>{NAVBAR}<div class="container py-5" style="max-width: 800px;"><div class="card-box"><h2 class="brand-text">About Universal Pro</h2><p class="mt-4 text-muted">Universal Pro Downloader is a leading web-based tool.</p></div></div>{FOOTER}</body></html>"""
+CONTACT_PAGE = f"""<!DOCTYPE html><html><head>{COMMON_HEAD}<title>Contact Us - Universal Pro</title></head><body>{NAVBAR}<div class="container py-5" style="max-width: 600px;"><div class="card-box"><h2 class="brand-text text-center">Contact Us</h2><p class="text-center text-muted mb-4">nadeemshaik2007@gmail.com</p></div></div>{FOOTER}</body></html>"""
+PRIVACY_PAGE = f"""<!DOCTYPE html><html><head>{COMMON_HEAD}<title>Privacy Policy</title></head><body>{NAVBAR}<div class="container py-5"><div class="card-box"><h2>Privacy Policy</h2><p class="text-muted">We do not store the videos you download.</p></div></div>{FOOTER}</body></html>"""
+TERMS_PAGE = f"""<!DOCTYPE html><html><head>{COMMON_HEAD}<title>Terms & Conditions</title></head><body>{NAVBAR}<div class="container py-5"><div class="card-box"><h2>Terms & Conditions</h2><ul class="text-muted"><li>Personal use only.</li></ul></div></div>{FOOTER}</body></html>"""
 
 # ---------------- ROUTES ----------------
 
 @app.route("/")
-def home():
-    return render_template_string(LANDING_PAGE)
+def home(): return render_template_string(LANDING_PAGE)
 
 @app.route("/blog")
-def blog():
-    return render_template_string(BLOG_PAGE)
+def blog(): return render_template_string(BLOG_PAGE)
 
 @app.route("/tool")
-def tool():
-    return render_template_string(TOOL_PAGE)
+def tool(): return render_template_string(TOOL_PAGE)
 
 @app.route("/about")
-def about():
-    return render_template_string(ABOUT_PAGE)
+def about(): return render_template_string(ABOUT_PAGE)
 
 @app.route("/contact")
-def contact():
-    return render_template_string(CONTACT_PAGE)
+def contact(): return render_template_string(CONTACT_PAGE)
 
 @app.route("/privacy")
-def privacy():
-    return render_template_string(PRIVACY_PAGE)
+def privacy(): return render_template_string(PRIVACY_PAGE)
 
 @app.route("/terms")
-def terms():
-    return render_template_string(TERMS_PAGE)
-
-# --- ADSENSE ADS.TXT ROUTE ---
+def terms(): return render_template_string(TERMS_PAGE)
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
@@ -301,14 +187,16 @@ def analyze():
         return render_template_string(TOOL_PAGE, error="Please paste a valid URL.")
     
     try:
+        # PINTEREST & SNAPCHAT FIX: added user-agent and referer
         ydl_opts = {
             "quiet": True,
             "no_warnings": True,
             "format": "best[ext=mp4]/best",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            "referer": "https://www.pinterest.com/",
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            
             preview_url = info.get("url")
             if "formats" in info:
                 for f in info.get("formats", []):
@@ -316,11 +204,7 @@ def analyze():
                         preview_url = f.get("url")
                         break
 
-            result = {
-                "title": info.get("title", "Video"),
-                "preview": preview_url,
-                "original_url": url,
-            }
+            result = {"title": info.get("title", "Video"), "preview": preview_url, "original_url": url}
             return render_template_string(TOOL_PAGE, result=result)
     except Exception as e:
         return render_template_string(TOOL_PAGE, error=f"Error: {str(e)}. Make sure the link is public.")
@@ -328,8 +212,7 @@ def analyze():
 @app.route("/download", methods=["POST"])
 def download():
     url = request.form.get("video_url")
-    if not url:
-        return "No URL provided", 400
+    if not url: return "No URL provided", 400
         
     uid = str(uuid.uuid4())[:8]
     file_path = os.path.join(DOWNLOAD_FOLDER, f"{uid}.mp4")
@@ -339,6 +222,7 @@ def download():
         "outtmpl": file_path,
         "quiet": True,
         "no_warnings": True,
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
     }
     
     try:
@@ -347,10 +231,8 @@ def download():
             
         @after_this_request
         def remove_file(response):
-            try:
-                os.remove(file_path)
-            except:
-                pass
+            try: os.remove(file_path)
+            except: pass
             return response
             
         return send_file(file_path, as_attachment=True)
